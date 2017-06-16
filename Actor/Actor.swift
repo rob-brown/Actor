@@ -27,7 +27,7 @@ import Foundation
 public final class Actor<Message, State> {
     public typealias MessageHandler = (Message, State) -> State
 
-    public let state: Agent<State>
+    private let state: Agent<State>
     private let handler: MessageHandler
 
     public convenience init(initialState: State, label: String = "pro.tricksofthetrade.Actor", messageHandler: @escaping MessageHandler) {
