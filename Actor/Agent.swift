@@ -29,30 +29,30 @@ public enum AgentConcurrencyType {
     case async
 }
 
-public final class Agent<T> {
+public final class Agent<State> {
 
     private let queue: DispatchQueue
-    private var state: T
+    private var state: State
 
-    public convenience init(state: T, label: String = "pro.tricksofthetrade.Agent") {
+    public convenience init(state: State, label: String = "pro.tricksofthetrade.Agent") {
         let queue = DispatchQueue(label: label, qos: .userInitiated, attributes: [], autoreleaseFrequency: .inherit, target: nil)
         self.init(state: state, queue: queue)
     }
 
-    public init(state: T, queue: DispatchQueue) {
+    public init(state: State, queue: DispatchQueue) {
         self.state = state
         self.queue = queue
     }
 
-    public func fetch<U>(closure: ((T) -> U)) -> U {
-        var result: U!
+    public func fetch<Result>(closure: ((State) -> Result)) -> Result {
+        var result: Result!
         sync { state in
             result = closure(state)
         }
         return result
     }
 
-    public func update(_ type: AgentConcurrencyType = .async, closure: @escaping (T) -> T) {
+    public func update(_ type: AgentConcurrencyType = .async, closure: @escaping (State) -> State) {
         switch type {
         case .async:
             async { state in
@@ -65,8 +65,8 @@ public final class Agent<T> {
         }
     }
 
-    public func fetchAndUpdate<U>(closure: (T) -> (U, T)) -> U {
-        var result: U!
+    public func fetchAndUpdate<Result>(closure: (State) -> (Result, State)) -> Result {
+        var result: Result!
         sync { state in
             let (returnValue, newState) = closure(state)
             self.state = newState
@@ -75,19 +75,19 @@ public final class Agent<T> {
         return result
     }
 
-    public func cast(closure: @escaping ((T) -> Void)) {
+    public func cast(closure: @escaping ((State) -> Void)) {
         async(closure: closure)
     }
 
     // MARK: - Helpers
 
-    private func sync(closure: ((T) -> Void)) {
+    private func sync(closure: ((State) -> Void)) {
         queue.sync {
             closure(state)
         }
     }
 
-    private func async(closure: @escaping ((T) -> Void)) {
+    private func async(closure: @escaping ((State) -> Void)) {
         queue.async {
             closure(self.state)
         }
