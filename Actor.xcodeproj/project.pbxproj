@@ -14,6 +14,7 @@
 		E11FD5BD1EF4373C0053EBF5 /* Agent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E11FD5BC1EF4373C0053EBF5 /* Agent.swift */; };
 		E11FD5BF1EF4378A0053EBF5 /* ActorRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = E11FD5BE1EF4378A0053EBF5 /* ActorRegistry.swift */; };
 		E14B60E21F1FBFE10046DA7F /* ConcurrentReadAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14B60E11F1FBFE10046DA7F /* ConcurrentReadAgent.swift */; };
+		E1C65638201296090092265C /* PureStateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1C65637201296090092265C /* PureStateMachine.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,6 +38,7 @@
 		E11FD5BC1EF4373C0053EBF5 /* Agent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Agent.swift; sourceTree = "<group>"; };
 		E11FD5BE1EF4378A0053EBF5 /* ActorRegistry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActorRegistry.swift; sourceTree = "<group>"; };
 		E14B60E11F1FBFE10046DA7F /* ConcurrentReadAgent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConcurrentReadAgent.swift; sourceTree = "<group>"; };
+		E1C65637201296090092265C /* PureStateMachine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PureStateMachine.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +85,7 @@
 				E11FD5BE1EF4378A0053EBF5 /* ActorRegistry.swift */,
 				E11FD5BC1EF4373C0053EBF5 /* Agent.swift */,
 				E14B60E11F1FBFE10046DA7F /* ConcurrentReadAgent.swift */,
+				E1C65637201296090092265C /* PureStateMachine.swift */,
 				E11FD5A31EF435A40053EBF5 /* Actor.h */,
 				E11FD5A41EF435A40053EBF5 /* Info.plist */,
 			);
@@ -211,6 +214,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E1C65638201296090092265C /* PureStateMachine.swift in Sources */,
 				E11FD5BF1EF4378A0053EBF5 /* ActorRegistry.swift in Sources */,
 				E11FD5BB1EF437340053EBF5 /* Actor.swift in Sources */,
 				E14B60E21F1FBFE10046DA7F /* ConcurrentReadAgent.swift in Sources */,
