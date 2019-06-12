@@ -27,7 +27,7 @@ import Foundation
 // Based on Elm architecture and https://gist.github.com/andymatuschak/d5f0a8730ad601bcccae97e8398e25b2
 
 public final class PureStateMachine<State, Event, Command> {
-    public typealias EventHandler = (State, Event) -> (State, Command)
+    public typealias EventHandler = (State, Event) -> StateUpdate<State, Command>
 
     public var currentState: State {
         return state.fetch { $0 }
@@ -51,10 +51,69 @@ public final class PureStateMachine<State, Event, Command> {
         self.handler = handler
     }
 
-    public func handleEvent(_ event: Event) -> Command {
-        return state.fetchAndUpdate {
-            let (newState, command) = self.handler($0, event)
-            return (command, newState)
+    public func handleEvent(_ event: Event) -> [Command] {
+        let commands: [Command] = state.fetchAndUpdate { currentState in
+            let stateUpdate = self.handler(currentState, event)
+            switch(stateUpdate){
+            case .NoUpdate:
+                return ([], currentState)
+            case .State(let updatedState):
+                return ([], updatedState)
+            case .Commands(let commands):
+                return (commands, currentState)
+            case let .StateAndCommands(updatedState, commands):
+                return (commands, updatedState)
+            }
+        }
+        return commands
+    }
+}
+
+public enum StateUpdate<State, Command> {
+    case NoUpdate
+    case State(State)
+    case Commands([Command])
+    case StateAndCommands(State, [Command])
+    
+    public var state: State? {
+        switch self {
+        case .NoUpdate, .Commands:            return nil
+        case .State(let state):               return state
+        case .StateAndCommands(let state, _): return state
+        }
+    }
+    
+    public var commands: [Command] {
+        switch self {
+        case .NoUpdate, .State:                  return []
+        case .Commands(let commands):            return commands
+        case .StateAndCommands(_, let commands): return commands
+        }
+    }
+    
+    public func mapState<T>(_ closure: (State) -> T) -> StateUpdate<T, Command> {
+        switch self {
+        case .NoUpdate:
+            return .NoUpdate
+        case .Commands(let commands):
+            return .Commands(commands)
+        case .State(let state):
+            return .State(closure(state))
+        case .StateAndCommands(let state, let commands):
+            return .StateAndCommands(closure(state), commands)
+        }
+    }
+    
+    public func mapCommands<T>(_ closure: (Command) -> T) -> StateUpdate<State, T> {
+        switch self {
+        case .NoUpdate:
+            return .NoUpdate
+        case .Commands(let commands):
+            return .Commands(commands.map(closure))
+        case .State(let state):
+            return .State(state)
+        case .StateAndCommands(let state, let commands):
+            return .StateAndCommands(state, commands.map(closure))
         }
     }
 }

@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name         = "Actor"
-  spec.version      = "0.1.4"
+  spec.version      = "2.0.0"
   spec.summary      = "Simple implementation of the actor model."
   spec.description  = <<-DESC
   A simple implementation of the actor model in Swift.
