@@ -104,7 +104,7 @@ public enum StateUpdate<State, Command> {
         }
     }
     
-    public func mapCommand<T>(_ closure: (Command) -> T) -> StateUpdate<State, T> {
+    public func mapCommands<T>(_ closure: (Command) -> T) -> StateUpdate<State, T> {
         switch self {
         case .NoUpdate:
             return .NoUpdate
